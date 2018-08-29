@@ -8,11 +8,78 @@
 
 import UIKit
 
+//extension UIView {
+//    func fadeIn() {
+//        UIView.animate(withDuration: 0.3,
+//                       delay: 0.0,
+//                       options: .curveEaseIn,
+//                       animations: { self.alpha = 1.0 },
+//                       completion: nil)
+//    }
+//
+//    func fadeOut() {
+//        UIView.animate(withDuration: 0.3,
+//                       delay: 0.0,
+//                       options: .curveEaseOut,
+//                       animations: { self.alpha = 0.0 },
+//                       completion: nil)
+//    }
+//}
+
 class ViewController: UIViewController {
+    
+    var labelsArray: [UILabel] = []
+    var imageView: UIImageView? = nil
     
     var shouldScramble: Bool = false
     
     @IBAction func toggle(_ sender: Any) {
+        shouldScramble = !shouldScramble
+        
+        guard let imageView = imageView else { return }
+        
+        if shouldScramble {
+//            imageView.fadeOut()
+            
+            UIView.animate(withDuration: 3, delay: 0.0, options: .curveEaseInOut, animations: {
+                
+                imageView.alpha = 0.0
+                
+                guard let navigationHeight = self.navigationController?.navigationBar.frame.height else { return }
+                
+                for label in self.labelsArray {
+                    label.frame.origin = CGPoint(x: CGFloat(drand48()) * (self.view.bounds.width - label.frame.width), y: CGFloat(drand48()) * (self.view.bounds.height - label.frame.height - navigationHeight) + navigationHeight)
+                    
+                    label.layer.backgroundColor = UIColor(hue: CGFloat(drand48()), saturation: 1.0, brightness: 1.0, alpha: 0.2).cgColor
+                    
+                    // Animation is weird!
+//                    UIView.transition(with: label, duration: 3, options: .transitionCrossDissolve, animations: {
+//                        label.textColor = UIColor(hue: CGFloat(drand48()), saturation: 1.0, brightness: 0.6, alpha: 1.0)
+//                    }, completion: nil)
+                    
+                    label.textColor = UIColor(hue: CGFloat(drand48()), saturation: 1.0, brightness: 0.6, alpha: 1.0)
+                    label.transform = CGAffineTransform(rotationAngle: CGFloat(drand48()) * CGFloat.pi * 2)
+                }
+            }, completion: nil)
+
+        } else { // not scramble
+            UIView.animate(withDuration: 3, delay: 0.0, options: .curveEaseInOut, animations: {
+                
+                imageView.alpha = 1.0
+                
+                // At the point, the view is already on the screen so we can ask the view how big it is.
+                var xOffset = (self.view.bounds.width - (CGFloat(self.labelsArray.count) * 50.0)) / 2
+                
+                for label in self.labelsArray {
+                    label.transform = .identity
+                    label.frame.origin = CGPoint(x: xOffset, y: 300.0)
+                    xOffset += 50.0
+                    label.layer.backgroundColor = UIColor.clear.cgColor    // layer properties are animated
+                    label.textColor = UIColor.darkText
+                    
+                }
+            }, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -24,13 +91,22 @@ class ViewController: UIViewController {
     func setup() {
         
         let string = "Lambda"
-        var xOffset = 75.0
+        
+        // At this point, the viewController's view is created but not placed on the screen yet, so we don't know how big the view is to center the letters in it. So we ask the screen how big it is instead.
+        let screenWidth = UIScreen.main.bounds.width
+        
+        var xOffset = (screenWidth - (CGFloat(string.count) * 50.0)) / 2
         
         for character in string {
             let label = UILabel(frame: CGRect(x: xOffset, y: 300.0, width: 50.0, height: 50.0))
             xOffset += 50.0
             label.font = UIFont.boldSystemFont(ofSize: 30.0)
+            label.textAlignment = .center
+            label.layer.cornerRadius = 8
+            label.clipsToBounds = true
             label.text = String(character)
+            
+            labelsArray.append(label)
             view.addSubview(label)
         }
         
@@ -48,6 +124,10 @@ class ViewController: UIViewController {
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = image
+        
+        // This imageView is the var outside this function
+        self.imageView = imageView
+        
         view.addSubview(imageView)
         
         let imageWidthConstraint = NSLayoutConstraint(item: imageView,
@@ -85,4 +165,3 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([imageWidthConstraint, imageHeightConstraint, imageCenterXConstraint, imageTopConstraint])
     }
 }
-
