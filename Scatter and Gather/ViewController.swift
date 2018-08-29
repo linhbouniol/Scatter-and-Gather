@@ -27,9 +27,9 @@ class ViewController: UIViewController {
         var xOffset = 75.0
         
         for character in string {
-            let label = UILabel(frame: CGRect(x: xOffset, y: 300.0, width: 30.0, height: 30.0))
+            let label = UILabel(frame: CGRect(x: xOffset, y: 300.0, width: 50.0, height: 50.0))
             xOffset += 50.0
-            label.font = UIFont.boldSystemFont(ofSize: 25.0)
+            label.font = UIFont.boldSystemFont(ofSize: 30.0)
             label.text = String(character)
             view.addSubview(label)
         }
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
 //        imageView.frame.origin = CGPoint(x: 100.0, y: 300.0)
         
         // Assign the image to constant and use the .size property to calculate the height. Width can be anything we want, but the height will be scaled to that.
-        let image = #imageLiteral(resourceName: "Lambda_Logo_Full")
+        let image = #imageLiteral(resourceName: "lambda logo")
     
 //        let imageView = UIImageView(frame: CGRect(x: 100.0, y: 300.0, width: 250.0, height: 250.0 * image.size.height / image.size.width))
         
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
                                                      toItem: nil,
                                                      attribute: .notAnAttribute,
                                                      multiplier: 1.0,
-                                                     constant: 400.0)
+                                                     constant: 100.0)
         
         let imageHeightConstraint = NSLayoutConstraint(item: imageView,
                                                       attribute: .height,
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
                                                    toItem: view,
                                                    attribute: .top,
                                                    multiplier: 1.0,
-                                                   constant: 100.0)
+                                                   constant: 150.0)
         
         NSLayoutConstraint.activate([imageWidthConstraint, imageHeightConstraint, imageCenterXConstraint, imageTopConstraint])
     }
