@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Good for when we have many things to fade in and out, but if there is just one thing, its best to do it directly.
+
 //extension UIView {
 //    func fadeIn() {
 //        UIView.animate(withDuration: 0.3,
@@ -69,9 +71,11 @@ class ViewController: UIViewController {
 //                    }, completion: nil)
                     
                     label.textColor = UIColor(hue: CGFloat(drand48()), saturation: 1.0, brightness: 0.6, alpha: 1.0)
+                    
+                    // 2D rotation
 //                    label.transform = CGAffineTransform(rotationAngle: CGFloat(drand48()) * CGFloat.pi * 2)
                     
-                    // Change any of the x, y, z values for different rotation (-1 to 1)
+                    // 3D rotation - change any of the x, y, z values for different rotation (-1 to 1)
                     label.layer.transform = CATransform3DMakeRotation(CGFloat(drand48()) * CGFloat.pi * 2, 1.0, 1.0, 0.0)
                     
                     label.layer.shadowOpacity = 1.0
@@ -147,7 +151,7 @@ class ViewController: UIViewController {
     
 //        let imageView = UIImageView(frame: CGRect(x: 100.0, y: 300.0, width: 250.0, height: 250.0 * image.size.height / image.size.width))
         
-        // We want to horizontally center the imageView, so constrains is a proper way to do this. But to do this we need to not pass in any frame for the imageView and use constrains to do that.
+        // We want to horizontally center the imageView, so constraints is a proper way to do this. But to do this we need to not pass in any frame for the imageView and use constraints to do that.
         let imageView = UIImageView()
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
