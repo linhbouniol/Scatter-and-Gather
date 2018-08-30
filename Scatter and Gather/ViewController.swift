@@ -58,7 +58,11 @@ class ViewController: UIViewController {
 //                    }, completion: nil)
                     
                     label.textColor = UIColor(hue: CGFloat(drand48()), saturation: 1.0, brightness: 0.6, alpha: 1.0)
-                    label.transform = CGAffineTransform(rotationAngle: CGFloat(drand48()) * CGFloat.pi * 2)
+//                    label.transform = CGAffineTransform(rotationAngle: CGFloat(drand48()) * CGFloat.pi * 2)
+                    
+                    // Change any of the x, y, z values for different rotation (-1 to 1)
+                    label.layer.transform = CATransform3DMakeRotation(CGFloat(drand48()) * CGFloat.pi * 2, 1.0, 1.0, 0.0)
+                    
                 }
             }, completion: nil)
 
@@ -71,7 +75,9 @@ class ViewController: UIViewController {
                 var xOffset = (self.view.bounds.width - (CGFloat(self.labelsArray.count) * 50.0)) / 2
                 
                 for label in self.labelsArray {
-                    label.transform = .identity
+//                    label.transform = .identity
+                    label.layer.transform = CATransform3DIdentity
+                    
                     label.frame.origin = CGPoint(x: xOffset, y: 300.0)
                     xOffset += 50.0
                     label.layer.backgroundColor = UIColor.clear.cgColor    // layer properties are animated
