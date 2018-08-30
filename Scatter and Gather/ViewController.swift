@@ -43,7 +43,18 @@ class ViewController: UIViewController {
             
             UIView.animate(withDuration: 3, delay: 0.0, options: .curveEaseInOut, animations: {
                 
-                imageView.alpha = 0.0
+//                imageView.alpha = 0.0
+                
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(3.0)
+                let animation = CAKeyframeAnimation(keyPath: "opacity")
+                animation.values = [1.0, 0.25, 0.75, 0.0]
+                imageView.layer.add(animation, forKey: "opacityAnimation")
+                
+                CATransaction.setCompletionBlock {
+                    imageView.layer.opacity = 0.0
+                }
+                CATransaction.commit()
                 
                 guard let navigationHeight = self.navigationController?.navigationBar.frame.height else { return }
                 
@@ -62,6 +73,9 @@ class ViewController: UIViewController {
                     
                     // Change any of the x, y, z values for different rotation (-1 to 1)
                     label.layer.transform = CATransform3DMakeRotation(CGFloat(drand48()) * CGFloat.pi * 2, 1.0, 1.0, 0.0)
+                    
+                    label.layer.shadowOpacity = 1.0
+                    label.layer.shadowRadius = 5.0
                     
                 }
             }, completion: nil)
@@ -83,6 +97,14 @@ class ViewController: UIViewController {
                     label.layer.backgroundColor = UIColor.clear.cgColor    // layer properties are animated
                     label.textColor = UIColor.darkText
                     
+//                    CATransaction.begin()
+//                    CATransaction.setAnimationDuration(3.0)
+//                    CATransaction.setDisableActions(false)
+                    
+                    label.layer.shadowOpacity = 0.0
+                    label.layer.shadowRadius = 0.0
+                    
+//                    CATransaction.commit()
                 }
             }, completion: nil)
         }
